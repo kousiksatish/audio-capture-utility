@@ -170,7 +170,6 @@ int AudioEncoder::init_capturer(snd_pcm_t **handle, snd_pcm_uframes_t frames, ch
     unsigned int sample_rate = 44100; // CD Quality
     unsigned int bits_per_sample = 16; // As we are using S16_LE forma
     unsigned int number_of_channels = 2; // stereo
-    uint32_t duration = 5000; // duration to record in milliseconds
 
     printf("Capture device is %s\n", device);
 
@@ -265,12 +264,8 @@ int AudioEncoder::init_capturer(snd_pcm_t **handle, snd_pcm_uframes_t frames, ch
         return err;
     }
 
-    //unsigned int bytes_per_frame = bits_per_sample / 8 * number_of_channels;
-    //uint32_t pcm_data_size = period_time * bytes_per_frame * duration / 1000;
-
     printf("Sample rate: %d Hz\n", sample_rate);
     printf("Channels: %d\n", number_of_channels);
-    printf("Duration: %d millisecs\n", duration);
     printf("Number of frames: %lu", frames);
     return 0;
 }
