@@ -2,7 +2,7 @@
   "name": "audio-capture-utility",
   "version": "0.0.1",
   "description": "linux sound capture, resample and encode",
-  "main": "test.js",
+  "main": "index.js",
   "private": true,
   "dependencies": {
     "bindings": "^1.5.0",
