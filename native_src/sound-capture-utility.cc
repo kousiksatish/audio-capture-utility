@@ -19,12 +19,18 @@ Napi::Object SoundCaptureUtility::Init(Napi::Env env, Napi::Object exports)
 
 SoundCaptureUtility::SoundCaptureUtility(const Napi::CallbackInfo& info): Napi::ObjectWrap<SoundCaptureUtility>(info)
 {
-    _encoder = new AudioEncoder();
-    isClosing = false;
+    //
 }
 
 void SoundCaptureUtility::StartListener(const Napi::CallbackInfo& info)
 {
+    if (_encoder != NULL) {
+        printf("Encoder is not null. Already listener is started.");
+        return;
+    }
+    _encoder = new AudioEncoder();
+    isClosing = false;
+
     // Tsfn related
     Napi::Env env = info.Env();
     if (info.Length() < 1 || !info[0].IsFunction())
