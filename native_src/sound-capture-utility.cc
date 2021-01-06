@@ -19,7 +19,7 @@ Napi::Object SoundCaptureUtility::Init(Napi::Env env, Napi::Object exports)
 
 SoundCaptureUtility::SoundCaptureUtility(const Napi::CallbackInfo& info): Napi::ObjectWrap<SoundCaptureUtility>(info)
 {
-    //
+    _encoder = NULL;
 }
 
 void SoundCaptureUtility::StartListener(const Napi::CallbackInfo& info)
