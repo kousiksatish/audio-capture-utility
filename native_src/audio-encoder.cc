@@ -348,6 +348,20 @@ int AudioEncoder::finish_audio_encoding()
 
 void AudioEncoder::cleanup()
 {
+    close_capturer(&handle, &buffer);
+
+    if (src_data)
+        av_freep(&src_data[0]);
+    av_freep(&src_data);
+
+    if (dst_data)
+        av_freep(&dst_data[0]);
+    av_freep(&dst_data);
+
+    swr_free(&swr_ctx);
+
+    finish_audio_encoding();
+
     if (aud_frame)
         av_frame_free(&aud_frame);
 

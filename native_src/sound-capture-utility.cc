@@ -64,6 +64,8 @@ void SoundCaptureUtility::StartListener(const Napi::CallbackInfo& info)
 
 void SoundCaptureUtility::StopListener(const Napi::CallbackInfo& info)
 {
+    isClosing = true;
+    nativeThread.join();
     delete _encoder;
     _encoder = NULL;
 }
@@ -71,7 +73,10 @@ void SoundCaptureUtility::StopListener(const Napi::CallbackInfo& info)
 SoundCaptureUtility::~SoundCaptureUtility()
 {
     if (_encoder != NULL) {
+        isClosing = true;
+        nativeThread.join();
         delete _encoder;
+        _encoder = NULL;
     }
 }
 
