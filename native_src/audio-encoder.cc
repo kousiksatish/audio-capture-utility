@@ -1,6 +1,7 @@
 #include <iostream>
 #include "../headers/audio-encoder.h"
 #include <unistd.h>
+#include <chrono>
 
 
 AudioEncoder::AudioEncoder()
@@ -270,6 +271,11 @@ int AudioEncoder::init_capturer(snd_pcm_t **handle, snd_pcm_uframes_t frames, ch
     return 0;
 }
 
+uint64_t timeSinceEpochMillisec() {
+  using namespace std::chrono;
+  return duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
+}
+
 void AudioEncoder::close_capturer(snd_pcm_t **handle, char** buffer)
 {
     //snd_pcm_drain(*handle);
@@ -291,7 +297,7 @@ AVPacket* AudioEncoder::encode_audio_samples(uint8_t **aud_samples)
         aud_frame->data[1][i] = aud_samples[1][i];
     }
 
-    aud_frame->pts = aud_frame_counter++;
+    aud_frame->pts = timeSinceEpochMillisec();
 
     ret = avcodec_send_frame(aud_codec_context, aud_frame);
     if (ret < 0) {
