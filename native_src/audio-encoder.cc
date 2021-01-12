@@ -356,8 +356,6 @@ void AudioEncoder::cleanup()
 {
     close_capturer(&handle, &buffer);
 
-    if (src_data)
-        av_freep(&src_data[0]);
     av_freep(&src_data);
 
     if (dst_data)
