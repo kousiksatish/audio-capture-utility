@@ -381,7 +381,7 @@ AVPacket *AudioEncoder::GetNextFrame()
         fprintf(stderr, "Error occured while recording: '%s'\n", snd_strerror(err));
         snd_pcm_recover(handle, err, 0);
     } else {
-        memcpy(src_data[0], buffer, size);
+        src_data[0] = (uint8_t *)buffer;
         int ret = swr_convert(swr_ctx, dst_data, dst_nb_samples, (const uint8_t **)src_data, src_nb_samples);
         if (ret < 0) {
             fprintf(stderr, "Error while converting: '%d, %d'\n", ret, AVERROR(ret));
