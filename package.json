@@ -21,6 +21,14 @@
     "type": "git",
     "url": "git+https://github.com/kousiksatish/linux-sound-capture-alsa-aac.git"
   },
+  "files": [
+    "headers",
+    "native_src",
+    "binding.gyp",
+    "index.js",
+    "index.d.ts",
+    "ffmpeg"
+  ],
   "author": "",
   "license": "ISC",
   "bugs": {
