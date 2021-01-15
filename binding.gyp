@@ -16,7 +16,6 @@
           "<@(ffmpeg_root)/lib/libavutil.a",
           "<@(ffmpeg_root)/lib/libavformat.a",
           "<@(ffmpeg_root)/lib/libswresample.a",
-          "<@(ffmpeg_root)/lib/libavcodec.a",
         ]
       },
       "target_name": "sound_capture_utility",
