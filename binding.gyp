@@ -3,22 +3,25 @@
     "ffmpeg_root%":"<(module_root_dir)/ffmpeg",
   },
   "targets": [
-    { 
+    {
+      "target_name": "sound_capture_utility",
       "cflags!": [ "-fno-exceptions"],
       "cflags_cc!": [ "-fno-exceptions"],
       "include_dirs" : [
-        "<!@(node -p \"require('node-addon-api').include\")"
+        "<!@(node -p \"require('node-addon-api').include\")",
+        "<@(ffmpeg_root)/include",
       ],
-      "link_settings": {
-        "libraries": [
-          "-lasound", # provided by libx11-dev
-          "-lavcodec",
-          "<@(ffmpeg_root)/lib/libavutil.a",
-          "<@(ffmpeg_root)/lib/libavformat.a",
-          "<@(ffmpeg_root)/lib/libswresample.a",
-        ]
-      },
-      "target_name": "sound_capture_utility",
+      "library_dirs" : [
+        "/opt/remotepc/ffmpeg"
+      ],
+      "libraries": [
+        "-lasound",
+        "-Wl,-rpath=/opt/remotepc/ffmpeg",
+        "-lavcodec",
+        "-lavutil",
+        "-lavformat",
+        "-lswresample"
+      ],      
       "sources": [ 
         "native_src/sound-capture-utility.cc",
         "native_src/audio-encoder.cc"
