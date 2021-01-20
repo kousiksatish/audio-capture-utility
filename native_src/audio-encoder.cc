@@ -118,15 +118,34 @@ int AudioEncoder::initialize_encoding_audio(const char *filename)
     avcodec_register_all();
     av_register_all();
 
-    AVCodec *aud_codec = avcodec_find_encoder(aud_codec_id);
+    AVCodec* prev = NULL;
+    AVCodec* temp;
+    AVCodec *aud_codec;
+    // do {
+    //     temp = av_codec_next(prev);
+    //     if (temp != NULL) {
+    //         printf("\nID : %d Name : %s", temp->id, temp->long_name);
+    //         if (temp->id == 86018) {
+    //             aud_codec = temp;
+    //             break;
+    //         }        
+    //     }
+    //     prev = temp;
+    // } while (temp != NULL);
+    
+    aud_codec = avcodec_find_encoder(aud_codec_id);
     avcodec_register(aud_codec);
 
-    if (!aud_codec)
+    if (!aud_codec) {
+        fprintf(stderr, "Unable to find audio codec");
         return COULD_NOT_FIND_AUD_CODEC;
+    }
 
     aud_codec_context = avcodec_alloc_context3(aud_codec);
-    if (!aud_codec_context)
+    if (!aud_codec_context) {
+        fprintf(stderr, "Unable to allocate audio context");
         return CONTEXT_CREATION_ERROR;
+    }
 
     aud_codec_context->bit_rate = 64000;
     aud_codec_context->sample_rate = 44100;
@@ -140,8 +159,10 @@ int AudioEncoder::initialize_encoding_audio(const char *filename)
 
     ret = avcodec_open2(aud_codec_context, aud_codec, NULL);
 
-    if (ret < 0)
+    if (ret < 0) {
+        fprintf(stderr, "Unable to open avcodec Return value - %d", ret);
         return COULD_NOT_OPEN_AUD_CODEC;
+    }
 
     aud_frame = av_frame_alloc();
     aud_frame->nb_samples = aud_codec_context->frame_size;
@@ -153,8 +174,10 @@ int AudioEncoder::initialize_encoding_audio(const char *filename)
 
     av_frame_get_buffer(aud_frame, buffer_size / aud_codec_context->channels);
 
-    if (!aud_frame)
+    if (!aud_frame) {
+        fprintf(stderr, "Unable to allocate memory for frame");
         return COULD_NOT_ALLOCATE_FRAME;
+    }
 
     aud_frame_counter = 0;
 
@@ -398,13 +421,4 @@ AVPacket *AudioEncoder::GetNextFrame()
         }
     }
     return NULL;
-}
-
-int main() {
-    AudioEncoder* _encoder = new AudioEncoder();
-    _encoder->init();
-
-    for(int i=0; i<100; i++) {
-        _encoder->GetNextFrame();
-    }
 }
